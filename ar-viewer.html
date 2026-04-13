@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AR Document Viewer</title>
+
+  <!-- model-viewer (production CDN) -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #ffffff;
+    }
+
+    header {
+      padding: 14px 16px;
+      background: #1a1a1a;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: calc(100vh - 60px);
+      background-color: #222;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  AR Document Viewer (Prototype)
+</header>
+
+<model-viewer
+  src="https://modelviewer.dev/shared-assets/models/Duck.glb"
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  camera-controls
+  auto-rotate
+  shadow-intensity="1"
+  exposure="1"
+  alt="3D Model"
+>
+</model-viewer>
+
+<div class="hint">
+  Drag to rotate • Tap AR on mobile
+</div>
+
+</body>
+</html>
