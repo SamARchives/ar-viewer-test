@@ -15,11 +15,13 @@
 <p id="status">If you see this text but no model below, the issue is model-viewer or GLB loading.</p>
 
 <model-viewer
+  id="viewer"
   src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
   camera-controls
   auto-rotate
+
   ar
-   ar-modes="scene-viewer quick-look"
+  ar-modes="scene-viewer quick-look"
 
   ar-scale="fixed"
   ar-placement="floor"
@@ -30,14 +32,16 @@
 <script>
   const mv = document.querySelector("#viewer");
 
-  mv.addEventListener("load", () => {
-    document.getElementById("status").innerText = "Model loaded successfully ✅";
-  });
+  if (mv) {
+    mv.addEventListener("load", () => {
+      document.getElementById("status").innerText = "Model loaded successfully ✅";
+    });
 
-  mv.addEventListener("error", (e) => {
-    document.getElementById("status").innerText = "Model failed to load ❌ (check network/CORS)";
-    console.log("Model error:", e);
-  });
+    mv.addEventListener("error", (e) => {
+      document.getElementById("status").innerText = "Model failed to load ❌";
+      console.log("Model error:", e);
+    });
+  }
 </script>
 
 </body>
