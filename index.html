@@ -71,21 +71,21 @@
 
     <!-- MODEL -->
     <model-viewer
-      id="viewer"
-      src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
-      camera-controls
-      touch-action="pan-y"
-      camera-orbit="0deg 75deg auto"
-      min-camera-orbit="auto auto 0.5m"
-      max-camera-orbit="auto auto 5m"
-      interaction-prompt="auto"
-      style="
-        width:100%;
-        max-width:900px;
-        height:55vh;
-        background:#111;
-      ">
-    </model-viewer>
+  id="viewer"
+  src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
+  camera-controls
+  camera-orbit="0deg 75deg 3.2m"
+  min-camera-orbit="auto auto 2.5m"
+  max-camera-orbit="auto auto 6m"
+  touch-action="pan-y"
+  interaction-prompt="auto"
+  style="
+    width:100%;
+    max-width:900px;
+    height:55vh;
+    background:#111;
+  ">
+</model-viewer>
 
   </div>
 
@@ -118,9 +118,12 @@
     loading.style.display = "flex";
 
     // Hide loader reliably
-    viewer.addEventListener("load", () => {
-      loading.style.display = "none";
-    });
+   viewer.addEventListener("load", () => {
+  loading.style.display = "none";
+
+  // Force render update (prevents blank GPU frame)
+  viewer.requestUpdate && viewer.requestUpdate();
+});
 
     // Backup: hide loader after 5s no matter what
     setTimeout(() => {
