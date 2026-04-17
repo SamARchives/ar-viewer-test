@@ -55,19 +55,26 @@
 </model-viewer>
   
 <script>
-  const mv = document.querySelector("#viewer");
+  const viewer = document.querySelector("#viewer");
+  const btn = document.querySelector("#arBtn");
+  const status = document.querySelector("#arStatus");
 
-  if (mv) {
-    mv.addEventListener("load", () => {
-      document.getElementById("status").innerText = "Model loaded successfully ✅";
-    });
+  btn.addEventListener("click", async () => {
+    try {
+      status.textContent = "Launching AR...";
 
-    mv.addEventListener("error", (e) => {
-      document.getElementById("status").innerText = "Model failed to load ❌";
-      console.log("Model error:", e);
-    });
-  }
+      // This forces model-viewer AR pipeline
+      if (viewer.activateAR) {
+        await viewer.activateAR();
+      } else {
+        status.textContent = "AR not supported on this device.";
+      }
+
+    } catch (e) {
+      console.log(e);
+      status.textContent = "AR failed to launch on this device.";
+    }
+  });
 </script>
-
 </body>
 </html>
