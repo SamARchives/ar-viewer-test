@@ -72,67 +72,88 @@
   </style>
 </head>
 
-<body>
+<body style="
+  margin:0;
+  background:#111;
+  font-family:Arial, sans-serif;
+  color:white;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+">
 
-  <div class="wrap">
+  <!-- TOP AREA (TITLE) -->
+  <div style="
+    flex:0 0 auto;
+    text-align:center;
+    padding:18px 12px 10px;
+  ">
+    <div style="font-size:28px; font-weight:bold;">
+      3D Archive Viewer
+    </div>
+    <div style="font-size:16px; opacity:0.8;">
+      Tap below to view in AR
+    </div>
+  </div>
 
-    <div class="title">3D Archive Viewer</div>
-    <div class="subtitle">Tap below to view in AR (if supported)</div>
-
+  <!-- MIDDLE AREA (MODEL) -->
+  <div style="
+    flex:1 1 auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:0;
+  ">
     <model-viewer
       id="viewer"
       src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
       camera-controls
       auto-rotate
       exposure="1"
-      shadow-intensity="0.8">
+      shadow-intensity="0.8"
+      style="width:100%; height:100%;">
     </model-viewer>
+  </div>
 
-    <button class="btn" id="arBtn">
+  <!-- BOTTOM AREA (BUTTON) -->
+  <div style="
+    flex:0 0 auto;
+    padding:14px 12px 20px;
+    text-align:center;
+  ">
+    <button id="arBtn"
+      style="
+        font-size:22px;
+        padding:18px 24px;
+        background:#1a73e8;
+        color:#fff;
+        border:none;
+        border-radius:12px;
+        width:90%;
+        max-width:360px;">
       View in AR
     </button>
 
-    <div class="note">
-      AR availability depends on your device.  
-      If AR does not open, you can still explore the 3D model above.
+    <div style="font-size:14px; opacity:0.7; margin-top:10px;">
+      AR availability depends on device support
     </div>
-
   </div>
 
- <script>
-const btn = document.getElementById("arBtn");
-const viewer = document.getElementById("viewer");
+  <!-- AR SCRIPT -->
+  <script>
+    const btn = document.getElementById("arBtn");
 
-let modelReady = false;
+    const modelURL = encodeURIComponent(
+      "https://samarchives.github.io/ar-viewer/thurstan_1129.glb"
+    );
 
-// Wait for model to fully load
-viewer.addEventListener("load", () => {
-  modelReady = true;
-  btn.style.opacity = "1";
-  btn.textContent = "View in AR";
-});
+    const arIntent =
+      `intent://arvr.google.com/scene-viewer/1.0?file=${modelURL}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;`;
 
-// disable AR until ready
-btn.style.opacity = "0.4";
-btn.textContent = "Loading model...";
-
-const modelURL = encodeURIComponent(
-  "https://yourusername.github.io/ar-viewer/thurstan_1129.glb"
-);
-
-const arIntent =
-  `intent://arvr.google.com/scene-viewer/1.0?file=${modelURL}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;`;
-
-btn.addEventListener("click", () => {
-
-  if (!modelReady) {
-    alert("Please wait for model to load");
-    return;
-  }
-
-  window.location.href = arIntent;
-});
-</script>
+    btn.addEventListener("click", () => {
+      window.location.href = arIntent;
+    });
+  </script>
 
 </body>
 </html>
