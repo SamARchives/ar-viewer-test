@@ -25,11 +25,60 @@
   src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
   camera-controls
   auto-rotate
-  ar
-  ar-modes="scene-viewer"
-  ar-scale="auto"
   style="width:100%; height:80vh; background:#111;">
 </model-viewer>
+
+  <div style="text-align:center; padding:12px;">
+  <button id="arLaunch"
+    style="
+      font-size:18px;
+      padding:14px 22px;
+      background:#1a73e8;
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      width:90%;
+      max-width:320px;">
+    View in AR
+  </button>
+
+  <p id="arMsg" style="font-size:14px; opacity:0.7; margin-top:8px;"></p>
+</div>
+
+  <script>
+const btn = document.getElementById("arLaunch");
+const msg = document.getElementById("arMsg");
+
+// IMPORTANT: replace with YOUR real GitHub Pages URL base
+const modelURL = encodeURIComponent("https://samarchives.github.io/ar-viewer/BCI-1_Grant_of_Thurstan_1129_re-sized.glb");
+
+// Android Scene Viewer (direct bypass)
+const androidAR = `intent://arvr.google.com/scene-viewer/1.0?file=${modelURL}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;`;
+
+// iOS Quick Look fallback (if you later add USDZ)
+const iosAR = "https://developer.apple.com/augmented-reality/quick-look/";
+
+btn.addEventListener("click", () => {
+
+  const ua = navigator.userAgent.toLowerCase();
+
+  // Android
+  if (ua.includes("android")) {
+    msg.textContent = "Launching AR...";
+    window.location.href = androidAR;
+    return;
+  }
+
+  // iOS
+  if (/iphone|ipad|ipod/.test(ua)) {
+    msg.textContent = "iOS AR requires USDZ model.";
+    window.location.href = iosAR;
+    return;
+  }
+
+  msg.textContent = "AR not supported on this device/browser.";
+});
+</script>
   
 </body>
 </html>
