@@ -21,12 +21,22 @@
 
 <body style="margin:0; font-family:Arial; background:#111; color:white;">
 
-<div style="padding:10px;">
-  <h2>AR Debug Test</h2>
+<div style="padding:12px; text-align:center;">
+  <button id="arBtn"
+    style="
+      font-size:18px;
+      padding:14px 22px;
+      background:#1a73e8;
+      color:white;
+      border:none;
+      border-radius:10px;
+      width:90%;
+      max-width:320px;
+    ">
+    View in AR
+  </button>
 
-  <p id="status">
-    If you see this text but no model below, the issue is model-viewer or GLB loading.
-  </p>
+  <p id="arStatus" style="font-size:14px; opacity:0.7; margin-top:8px;"></p>
 </div>
 
 <model-viewer
