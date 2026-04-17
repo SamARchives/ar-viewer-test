@@ -21,27 +21,10 @@
 
 <body style="margin:0; font-family:Arial; background:#111; color:white;">
 
-<div style="padding:12px; text-align:center;">
-  <button id="arBtn"
-    style="
-      font-size:18px;
-      padding:14px 22px;
-      background:#1a73e8;
-      color:white;
-      border:none;
-      border-radius:10px;
-      width:90%;
-      max-width:320px;
-    ">
-    View in AR
-  </button>
-
-  <p id="arStatus" style="font-size:14px; opacity:0.7; margin-top:8px;"></p>
-</div>
-
 <model-viewer
   id="viewer"
-  src="./BCI-1_Grant_of_Thurstan_1129_re-sized"
+  src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
+
   camera-controls
   auto-rotate
 
@@ -49,32 +32,8 @@
   ar-modes="scene-viewer quick-look"
   ar-scale="auto"
 
-  disable-zoom
-
-  style="width:100%; height:85vh;">
+  style="width:100%; height:80vh; background:#111;">
 </model-viewer>
   
-<script>
-  const viewer = document.querySelector("#viewer");
-  const btn = document.querySelector("#arBtn");
-  const status = document.querySelector("#arStatus");
-
-  btn.addEventListener("click", async () => {
-    try {
-      status.textContent = "Launching AR...";
-
-      // This forces model-viewer AR pipeline
-      if (viewer.activateAR) {
-        await viewer.activateAR();
-      } else {
-        status.textContent = "AR not supported on this device.";
-      }
-
-    } catch (e) {
-      console.log(e);
-      status.textContent = "AR failed to launch on this device.";
-    }
-  });
-</script>
 </body>
 </html>
