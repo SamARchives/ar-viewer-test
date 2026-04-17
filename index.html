@@ -2,6 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <title>3D + AR Viewer</title>
 
   <script type="module"
@@ -96,21 +99,40 @@
 
   </div>
 
-  <script>
-    const btn = document.getElementById("arBtn");
+ <script>
+const btn = document.getElementById("arBtn");
+const viewer = document.getElementById("viewer");
 
-    // IMPORTANT: replace with your real GitHub Pages URL
-    const modelURL = encodeURIComponent(
-      "https://samarchives.github.io/ar-viewer/BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
-    );
+let modelReady = false;
 
-    const arIntent =
-      `intent://arvr.google.com/scene-viewer/1.0?file=${modelURL}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;`;
+// Wait for model to fully load
+viewer.addEventListener("load", () => {
+  modelReady = true;
+  btn.style.opacity = "1";
+  btn.textContent = "View in AR";
+});
 
-    btn.addEventListener("click", () => {
-      window.location.href = arIntent;
-    });
-  </script>
+// disable AR until ready
+btn.style.opacity = "0.4";
+btn.textContent = "Loading model...";
+
+const modelURL = encodeURIComponent(
+  "https://yourusername.github.io/ar-viewer/thurstan_1129.glb"
+);
+
+const arIntent =
+  `intent://arvr.google.com/scene-viewer/1.0?file=${modelURL}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;`;
+
+btn.addEventListener("click", () => {
+
+  if (!modelReady) {
+    alert("Please wait for model to load");
+    return;
+  }
+
+  window.location.href = arIntent;
+});
+</script>
 
 </body>
 </html>
