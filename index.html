@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D Archive Viewer</title>
 
-  <!-- model-viewer -->
   <script type="module"
     src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <!-- Spinner style -->
   <style>
     body {
       margin: 0;
@@ -19,10 +17,10 @@
     }
 
     .spinner {
-      width: 36px;
-      height: 36px;
-      border: 4px solid rgba(255,255,255,0.2);
-      border-top: 4px solid white;
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top: 3px solid white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -46,15 +44,16 @@
     </div>
   </div>
 
-  <!-- MODEL AREA -->
+  <!-- MODEL -->
   <div style="
     width:100%;
     display:flex;
     justify-content:center;
     position:relative;
+    background:#111;
   ">
 
-    <!-- LOADING SPINNER -->
+    <!-- LOADER (always visible immediately) -->
     <div id="loading" style="
       position:absolute;
       top:50%;
@@ -63,49 +62,41 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap:12px;
-      opacity:0.9;
+      gap:10px;
+      z-index:10;
     ">
       <div class="spinner"></div>
-      <div style="font-size:16px;">Loading 3D model</div>
-    </div>
-
-    <!-- INTERACTION HINT -->
-    <div id="hint" style="
-      position:absolute;
-      bottom:10px;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:14px;
-      opacity:0.7;
-    ">
-      Drag to rotate
+      <div style="font-size:14px;">Loading model</div>
     </div>
 
     <!-- MODEL -->
     <model-viewer
-  id="viewer"
-  src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
-  camera-controls
-  exposure="1"
-  style="
-    width:100%;
-    max-width:900px;
-    height:60vh;
-    background:#111;
-  ">
-</model-viewer>
+      id="viewer"
+      src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
+      camera-controls
+      touch-action="pan-y"
+      camera-orbit="0deg 75deg auto"
+      min-camera-orbit="auto auto 0.5m"
+      max-camera-orbit="auto auto 5m"
+      interaction-prompt="auto"
+      style="
+        width:100%;
+        max-width:900px;
+        height:55vh;
+        background:#111;
+      ">
+    </model-viewer>
 
   </div>
 
   <!-- BUTTON -->
-  <div style="text-align:center; padding:12px 12px 20px;">
+  <div style="text-align:center; padding:14px;">
     <button id="arBtn"
       style="
         font-size:22px;
-        padding:18px 24px;
+        padding:18px;
         background:#1a73e8;
-        color:#fff;
+        color:white;
         border:none;
         border-radius:12px;
         width:90%;
@@ -113,32 +104,32 @@
       View in AR
     </button>
 
-    <div style="font-size:15px; opacity:0.7; margin-top:10px;">
-      AR availability depends on device support
+    <div style="font-size:14px; opacity:0.7; margin-top:10px;">
+      AR depends on device support
     </div>
   </div>
 
-  <!-- SCRIPT -->
   <script>
     const viewer = document.getElementById("viewer");
     const loading = document.getElementById("loading");
-    const hint = document.getElementById("hint");
     const btn = document.getElementById("arBtn");
 
-    // Hide loading when model loads
+    // FORCE loader visible immediately
+    loading.style.display = "flex";
+
+    // Hide loader reliably
     viewer.addEventListener("load", () => {
-      loading.style.opacity = "0";
-      setTimeout(() => loading.style.display = "none", 300);
+      loading.style.display = "none";
     });
 
-    // Hide hint after interaction
-    viewer.addEventListener("camera-change", () => {
-      hint.style.display = "none";
-    });
+    // Backup: hide loader after 5s no matter what
+    setTimeout(() => {
+      loading.style.display = "none";
+    }, 5000);
 
-    // AR launch
+    // AR LINK (⚠️ REPLACE THIS URL)
     const modelURL = encodeURIComponent(
-      "https://samarchives.github.io/ar-viewer/BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
+      "https://samarchives.github.io/ar-viewer-test/BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
     );
 
     const arIntent =
@@ -146,7 +137,6 @@
 
     btn.addEventListener("click", () => {
       btn.innerText = "Opening AR...";
-      btn.style.opacity = "0.7";
       window.location.href = arIntent;
     });
   </script>
