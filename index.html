@@ -1,8 +1,9 @@
 <!doctype html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3D Archive Viewer</title>
 
   <!-- model-viewer -->
@@ -17,7 +18,7 @@
       color: white;
     }
 
-    /* Smooth fade-in for model */
+    /* Smooth fade-in */
     model-viewer {
       opacity: 0;
       transition: opacity 0.4s ease;
@@ -64,7 +65,7 @@
     position:relative;
   ">
 
-    <!-- LOADING SPINNER -->
+    <!-- LOADING -->
     <div id="loading" style="
       position:absolute;
       top:50%;
@@ -81,16 +82,27 @@
       <div style="font-size:14px;">Loading model</div>
     </div>
 
-    <!-- MODEL -->
+    <!-- MODEL VIEWER -->
     <model-viewer
       id="viewer"
-      src="./BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
+
       camera-controls
+      touch-action="pan-y"
+      interaction-prompt="auto"
+
       camera-orbit="0deg 75deg 5m"
       min-camera-orbit="auto auto 1m"
       max-camera-orbit="auto auto 12m"
-      touch-action="pan-y"
-      interaction-prompt="auto"
+
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+
+      shadow-intensity="1"
+      exposure="1"
+
+      auto-rotate
+      auto-rotate-delay="3000"
+
       style="
         width:100%;
         max-width:900px;
@@ -123,28 +135,51 @@
 
   <!-- SCRIPT -->
   <script>
+
     const viewer = document.getElementById("viewer");
     const loading = document.getElementById("loading");
     const btn = document.getElementById("arBtn");
 
-    // Show loader immediately
     loading.style.display = "flex";
 
-    // Hide loader + fade in model
+    // -----------------------------------------
+    // MULTI-MODEL SUPPORT
+    // URL format:
+    // ?model=charter_1450
+    // -----------------------------------------
+
+    const params = new URLSearchParams(window.location.search);
+    const modelParam = params.get("model");
+
+    // DEFAULT MODEL (your current file)
+    const defaultModel = "BCI-1_Grant_of_Thurstan_1129_re-sized";
+
+    const activeModel = modelParam ? modelParam : defaultModel;
+
+    // Load model dynamically
+    viewer.src = `./${activeModel}.glb`;
+
+    // -----------------------------------------
+    // LOADING STATE
+    // -----------------------------------------
+
     viewer.addEventListener("load", () => {
       loading.style.display = "none";
       viewer.classList.add("loaded");
     });
 
-    // Safety fallback (prevents infinite loader)
+    // safety fallback
     setTimeout(() => {
       loading.style.display = "none";
       viewer.classList.add("loaded");
     }, 5000);
 
-    // AR link (Scene Viewer)
+    // -----------------------------------------
+    // ANDROID AR (Scene Viewer)
+    // -----------------------------------------
+
     const modelURL = encodeURIComponent(
-      "https://samarchives.github.io/ar-viewer-test/BCI-1_Grant_of_Thurstan_1129_re-sized.glb"
+      `https://samarchives.github.io/ar-viewer-test/${activeModel}.glb`
     );
 
     const arIntent =
@@ -157,14 +192,15 @@
 
       window.location.href = arIntent;
 
-      // reset button if AR doesn't launch
       setTimeout(() => {
         btn.innerText = "View in AR";
         btn.style.opacity = "1";
       }, 2500);
 
     });
+
   </script>
 
 </body>
+
 </html>
